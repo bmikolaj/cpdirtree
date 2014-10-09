@@ -15,8 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os.path
 import argparse
+import fnmatch
+import os.path
+from pipes import quote
+from re import sub
 
 def main(input_dir=None, output_dir=None, blacklist=None):
     try:
@@ -24,27 +27,40 @@ def main(input_dir=None, output_dir=None, blacklist=None):
     except OSError:
         pass
 
-    if blacklist is not None:
-        blacklist = set(blacklist)
-
-    _, top_input_dir = os.path.split(os.path.abspath(input_dir))
-    for current_dir, dirnames, _ in os.walk(input_dir):
+    for current_dir, dirnames, unfilenames in os.walk(input_dir):
         if blacklist is not None:
+            infiles = sorted(set([f for f in os.listdir(
+                                  current_dir)]) - blacklist)
+            wildlist = []
+            for el in blacklist:
+                wildlist = wildlist + fnmatch.filter(infiles, el)
+
+            blacklist = blacklist | set(wildlist)
             dirnames[:] = set(dirnames) - blacklist
-        
+        else:
+            blacklist = set([])
+
+        filenames = sorted(unfilenames)
         relative_dir = os.path.relpath(current_dir, input_dir)
-        current_out_dir = os.path.join(output_dir, top_input_dir, 
-                                       relative_dir).replace('/.', '/')
+        current_out_dir = sub(r'(?<=/)\.$', r'', os.path.join(output_dir,
+                              relative_dir))
         try:
             os.makedirs(current_out_dir)
         except OSError:
             pass
 
+        for filename in [f for f in filenames if f not in blacklist]:
+            out_file_path = os.path.join(current_out_dir, filename)
+            open(out_file_path, 'a').close()
+            
+    print('Copying Complete.')
+    
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('input_dir')
     parser.add_argument('output_dir')
     parser.add_argument('-b', '--blacklist', nargs='+',
-        help='Add arguments separated by spaces to omit filenames')
+        help='Add arguments separated by spaces to omit\
+              directories/filenames')
 
     main(**vars(parser.parse_args()))
