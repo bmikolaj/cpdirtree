@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#Directory Tree Copier, cpdirtree v1.0
+#Directory Tree Copier, cpdirtree v1.1
 #Copyright (c) 2014 by Brian Mikolajczyk, brianm12@gmail.com
 
 # This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,6 @@ import argparse
 import fnmatch
 import os.path
 from pipes import quote
-from re import sub
 
 def main(input_dir=None, output_dir=None, blacklist=None):
     try:
@@ -42,8 +41,11 @@ def main(input_dir=None, output_dir=None, blacklist=None):
 
         filenames = sorted(unfilenames)
         relative_dir = os.path.relpath(current_dir, input_dir)
-        current_out_dir = sub(r'(?<=/)\.$', r'', os.path.join(output_dir,
-                              relative_dir))
+        current_out_dir = os.path.join(output_dir,
+                          relative_dir)
+        if os.path.split(current_out_dir)[1] == '.':
+           current_out_dir = os.path.split(current_out_dir)[0]
+
         try:
             os.makedirs(current_out_dir)
         except OSError:
