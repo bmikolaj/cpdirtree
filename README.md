@@ -1,9 +1,9 @@
 #Directory Tree Copier
-v1.0
+v1.1
 
 ##Description
 
-Directory Tree Copier copies the entire directory structure and all files of the <input_directory> and creates the same structure in <output_directory> with blank files. Useful for cloning directory structures/files  without taking up much room on the disk.
+Directory Tree Copier copies the entire directory structure and all files of the \<input_directory\> and creates the same structure in \<output_directory\> with blank files. Useful for cloning directory structures/files without taking up much room on the disk.
 
 ##Dependencies
 Directory Tree Copier was designed for Linux.
@@ -35,7 +35,7 @@ Run from the command line;
 
 `-b BLACKLIST`, `--blacklist BLACKLIST` specifies a list of files and/or directories (separated by a space) to omit from rescuing (case-sensitive). Wildcards are accepted.
 ###Example 
-`user@computer:$ direscraw /media/Drive1/ /media/Drive2/Backup/ -b *.mp3 'Pictures Of Me'` (This will omit all mp3 files and a directory called Pictures Of Me). 
+`user@computer:$ cpdirtree /media/Drive1/ /media/Drive2/Backup/ -b *.mp3 'Pictures Of Me'` (This will omit all mp3 files and a directory called Pictures Of Me). 
 
 Note: Directories and files with characters that need escaping can be put in quotes. Files and directories are case-sensitive. Wildcards are accepted.
 
@@ -45,6 +45,12 @@ Note: Directories and files with characters that need escaping can be put in quo
   `sudo ./setup.sh uninstall`
 
 ##Changelog
+* v1.1
+
+  Added `--version`
+
+  Removed regex in favor of pythonic solution to hidden directories.
+
 * v1.0 (09 October 2014)
 
   Initial Release

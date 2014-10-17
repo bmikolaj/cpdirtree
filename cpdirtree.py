@@ -61,6 +61,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('input_dir')
     parser.add_argument('output_dir')
+    parser.add_argument('--version', action='version',
+                        version='cpdirtree v1.1')
     parser.add_argument('-b', '--blacklist', nargs='+',
         help='Add arguments separated by spaces to omit\
               directories/filenames')
