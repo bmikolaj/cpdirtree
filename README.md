@@ -1,5 +1,5 @@
 #Directory Tree Copier
-v1.1
+v1.11
 
 ##Description
 
@@ -45,6 +45,11 @@ Note: Directories and files with characters that need escaping can be put in quo
   `sudo ./setup.sh uninstall`
 
 ##Changelog
+* v1.11
+
+  Fixed Blacklist set/list bug
+
+  Made setup.sh executable
 * v1.1
 
   Added `--version`

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#Directory Tree Copier, cpdirtree v1.1
+#Directory Tree Copier, cpdirtree v1.11
 #Copyright (c) 2014 by Brian Mikolajczyk, brianm12@gmail.com
 
 # This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,10 @@ def main(input_dir=None, output_dir=None, blacklist=None):
     except OSError:
         pass
 
+    print('Copying...')
     for current_dir, dirnames, unfilenames in os.walk(input_dir):
         if blacklist is not None:
+            blacklist = set(blacklist)
             infiles = sorted(set([f for f in os.listdir(
                                   current_dir)]) - blacklist)
             wildlist = []
